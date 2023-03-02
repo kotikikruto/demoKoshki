@@ -20,23 +20,26 @@ public class Main extends Application {
 
     public void start(Stage primaryStage) throws Exception {
 
-        cats.add(new CreateKoshka("Eva", "1", "Black", "Green", "tiki", "Кошка"));
-        cats.add(new CreateKoshka("Begemot", "1", "Green", "Yellow", "no", "Кот"));
-        cats.add(new CreateKoshka("Adam", "1", "Gold", "Blue", "no", "Кот"));
+//        cats.add(new CreateKoshka("Eva", "1", "Black", "Green", "tiki", "Кошка"));
+//        cats.add(new CreateKoshka("Begemot", "1", "Green", "Yellow", "no", "Кот"));
+//        cats.add(new CreateKoshka("Adam", "1", "Gold", "Blue", "no", "Кот"));
 
         catBox.getItems().addAll(cats);
 
         sex.getItems().addAll(sexes);
         fur.getItems().addAll(furs);
+        colourFur.getItems().addAll(coloursFur);
+        colourEye.getItems().addAll(coloursEye);
+        isStripped.getItems().addAll(stripped);
 
         root.getChildren().add(strings);
 
         strings.setPadding(new Insets(10, 30, 10, 30));
         strings.setSpacing(20);
 
-        strings.getChildren().add(new Text("Select the cat"));
+        strings.getChildren().add(new Text("Выберите кошку: "));
         strings.getChildren().add(buttonBox);
-        strings.getChildren().add(new Text("Add new cat"));
+        strings.getChildren().add(new Text("Добавить кошку"));
         strings.getChildren().add(addCatBox);
 
         buttonBox.setSpacing(10);
@@ -47,14 +50,14 @@ public class Main extends Application {
         addCatBox.setSpacing(10);
         addCatBox.getChildren().add(new Text("Имя: "));
         addCatBox.getChildren().add(name);
-        addCatBox.getChildren().add(new Text("ColourFur: "));
-        addCatBox.getChildren().add(ColourFur);
-        addCatBox.getChildren().add(new Text("ColourEye: "));
-        addCatBox.getChildren().add(ColourEye);
-        addCatBox.getChildren().add(new Text("Fur: "));
+        addCatBox.getChildren().add(new Text("Окрас: "));
+        addCatBox.getChildren().add(colourFur);
+        addCatBox.getChildren().add(new Text("Цвет глаз: "));
+        addCatBox.getChildren().add(colourEye);
+        addCatBox.getChildren().add(new Text("Тип шерсти: "));
         addCatBox.getChildren().add(fur);
-        addCatBox.getChildren().add(new Text("Stripped: "));
-        addCatBox.getChildren().add(stripped);
+        addCatBox.getChildren().add(new Text("Полоски: "));
+        addCatBox.getChildren().add(isStripped);
         addCatBox.getChildren().add(new Text("Пол: "));
         addCatBox.getChildren().add(sex);
         addCatBox.getChildren().add(buttonAddCat);
@@ -64,27 +67,19 @@ public class Main extends Application {
             public void handle(ActionEvent e) {
                 CreateKoshka u = (CreateKoshka) catBox.getSelectionModel().getSelectedItem();
                 if (u != null) {
-                    textInfo.setText("Имя: " + u.getName() + ", " +
-                            "Тип шерсти: " + u.getFur() + ", " +
-                            "Окрас: " + u.getColourFur() + ", " +
-                            "Цвет глаз: " + u.getColourEye() + ", " +
-                            "Полоски: " + u.getStripped() + ", " +
-                            "Sex: " + u.getGender());
+                    textInfo.setText("Имя: " + u.getName() + ", " + "Тип шерсти: " + u.getFur() + ", " + "Окрас: " + u.getColourFur() + ", " + "Цвет глаз: " + u.getColourEye() + ", " + "Полоски: " + u.getStripped() + ", " + "Пол: " + u.getGender());
                 } else {
-                    textInfo.setText("Cat not selected");
+                    textInfo.setText("Кот не выбран");
                 }
             }
         });
         buttonAddCat.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                CreateKoshka u = new CreateKoshka(name.getText(), fur.getSelectionModel().getSelectedItem().toString(), ColourFur.getText(),
-                        ColourEye.getText(), stripped.getText(), sex.getSelectionModel().getSelectedItem().toString());
+                CreateKoshka u = new CreateKoshka(name.getText(), fur.getSelectionModel().getSelectedItem().toString(), colourFur.getSelectionModel().getSelectedItem().toString(), colourEye.getSelectionModel().getSelectedItem().toString(), isStripped.getSelectionModel().getSelectedItem().toString(), sex.getSelectionModel().getSelectedItem().toString());
                 cats.add(u);
                 catBox.getItems().addAll(u);
                 name.clear();
-                ColourFur.clear();
-                ColourEye.clear();
             }
         });
 
@@ -106,25 +101,40 @@ public class Main extends Application {
     ComboBox<CreateKoshka> catBox = new ComboBox<>();
     ComboBox sex = new ComboBox();
     ComboBox fur = new ComboBox();
-    Button buttonGetInfo = new Button("Info");
+    ComboBox colourFur = new ComboBox();
+    ComboBox colourEye = new ComboBox();
+    ComboBox isStripped = new ComboBox();
+    Button buttonGetInfo = new Button("Информация");
     Text textInfo = new Text();
 
     VBox addCatBox = new VBox();
-    Button buttonAddCat = new Button("Add Cat");
+    Button buttonAddCat = new Button("Добавить кота");
     TextField name = new TextField();
-    TextField ColourFur = new TextField();
-    TextField ColourEye = new TextField();
-    TextField stripped = new TextField();
 
     final private int WIDTH = 1000;
     final private int HEIGHT = 600;
 
     private ArrayList<CreateKoshka> cats = new ArrayList<>();
 
-    String[] sexes = new String[] {"Кот", "Кошка"};
-    String[] furs = new String[] {"Короткошерстный", "Длинношерстный", "Без шерсти"};
+    String[] sexes = new String[]{"Кот", "Кошка"};
+    String[] furs = new String[]{"Короткошерстный", "Длинношерстный", "Без шерсти"};
 
-    String[] coloursFur = new String[] {"", ""};
+    String[] coloursFur = new String[]{"Абрикосовый", "Абрикосовый с белыми пятнами",
+            "Белый", "Голубой", "Голубой с белыми пятнами", "Карамельный",
+            "Карамельный с белыми пятнами", "Коричневый", "Коричневый с белыми пятнами",
+            "Кремовый", "Кремовый с белыми пятнами", "Лиловый", "Лиловый с белыми пятнами",
+            "Рыжий", "Рыжий с белыми пятнами", "Фавн", "Фавн с белыми пятнами", "Циннамон",
+            "Циннамон с белыми пятнами", "Черепаховый", "Черепаховый с белыми пятнами",
+            "Черный", "Черный с белыми пятнами"
+    };
+
+    String[] coloursEye = new String[]{"Желтый", "Зеленый", "Карий", "Охра", "Светло-голубой",
+            "Серый", "Синий", "Темно-голубой", "Желтый + Темно-голубой", "Зеленый + Синий",
+            "Карий + Серый", "Охра + Светло-голубой"};
+
+    String[] stripped = new String[]{"Тикированный", "Полосатый", "Мраморный", "Не полосатый"};
+
+
 
 
 }

@@ -67,7 +67,7 @@ public class Main extends Application {
             public void handle(ActionEvent e) {
                 CreateKoshka u = (CreateKoshka) catBox.getSelectionModel().getSelectedItem();
                 if (u != null) {
-                    textInfo.setText("Имя: " + u.getName() + ", " + "Тип шерсти: " + u.getFur() + ", " + "Окрас: " + u.getColourFur() + ", " + "Цвет глаз: " + u.getColourEye() + ", " + "Полоски: " + u.getStripped() + ", " + "Пол: " + u.getGender());
+                    textInfo.setText("id: " + u.getId() + ", " + "Имя: " + u.getName() + ", " + "Тип шерсти: " + u.getFur() + ", " + "Окрас: " + u.getColourFur() + ", " + "Цвет глаз: " + u.getColourEye() + ", " + "Полоски: " + u.getStripped() + ", " + "Пол: " + u.getGender());
                 } else {
                     textInfo.setText("Кот не выбран");
                 }
@@ -133,8 +133,6 @@ public class Main extends Application {
             "Карий + Серый", "Охра + Светло-голубой"};
 
     String[] stripped = new String[]{"Тикированный", "Полосатый", "Мраморный", "Не полосатый"};
-
-
 
 
 }

@@ -15,6 +15,7 @@ public class CreateKoshka {
 
     public CreateKoshka(String name, String fur, String colourFur, String colourEye, String stripped, String gender) {
         id = counter;
+        counter += 1;
         this.name = name;
         this.fur = fur;
         this.colourFur = colourFur;
@@ -23,6 +24,8 @@ public class CreateKoshka {
         this.gender = gender;
 
     }
+
+    public int getId() { return id; }
 
     public String getName() {
         return name;

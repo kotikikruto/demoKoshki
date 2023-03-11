@@ -1,7 +1,5 @@
 package com.example.demokoshki;
 
-import java.util.ArrayList;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,28 +8,36 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 public class Main extends Application {
 
     public void start(Stage primaryStage) throws Exception {
 
-//        cats.add(new CreateKoshka("Eva", "1", "Black", "Green", "tiki", "Кошка"));
-//        cats.add(new CreateKoshka("Begemot", "1", "Green", "Yellow", "no", "Кот"));
-//        cats.add(new CreateKoshka("Adam", "1", "Gold", "Blue", "no", "Кот"));
+        cats.add(new CreateKoshka("Ева", "Короткошерстный", "Черный", "Голубой", "Тикированный", "Кошка"));
+        cats.add(new CreateKoshka("Begemot", "1", "Green", "Yellow", "no", "Кот"));
+        cats.add(new CreateKoshka("Adam", "1", "Gold", "Blue", "no", "Кот"));
 
         catBox.getItems().addAll(cats);
 
         sex.getItems().addAll(sexes);
+        sex.setValue("                                                         ");
         fur.getItems().addAll(furs);
+        fur.setValue("                                                         ");
         colourFur.getItems().addAll(coloursFur);
+        colourFur.setValue("                                                        ");
         colourEye.getItems().addAll(coloursEye);
+        colourEye.setValue("                                                         ");
         isStripped.getItems().addAll(stripped);
-
+        isStripped.setValue("                                                         ");
         root.getChildren().add(strings);
 
         strings.setPadding(new Insets(10, 30, 10, 30));
@@ -45,7 +51,7 @@ public class Main extends Application {
         buttonBox.setSpacing(10);
         buttonBox.getChildren().add(catBox);
         buttonBox.getChildren().add(buttonGetInfo);
-        buttonBox.getChildren().add(textInfo);
+
 
         addCatBox.setSpacing(10);
         addCatBox.getChildren().add(new Text("Имя: "));
@@ -65,9 +71,32 @@ public class Main extends Application {
         buttonGetInfo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                //Label secondLabel = new Label("Кошка: ");
+                HBox secondaryLayout = new HBox();
+                //secondaryLayout.getChildren().add(secondLabel);
+                secondaryLayout.getChildren().add(textInfo);
+                Scene secondScene = new Scene(secondaryLayout, 370, 60);
+
+                // New window (Stage)
+                Stage newWindow = new Stage();
+                newWindow.setTitle("Кошка-инфа");
+                newWindow.setScene(secondScene);
+
+                // Specifies the modality for new window.
+                newWindow.initModality(Modality.WINDOW_MODAL);
+
+                // Specifies the owner Window (parent) for new window
+                newWindow.initOwner(primaryStage);
+
+                // Set position of second window, related to primary window.
+                newWindow.setX(primaryStage.getX() + 200);
+                newWindow.setY(primaryStage.getY() + 100);
+
+                newWindow.show();
+
                 CreateKoshka u = (CreateKoshka) catBox.getSelectionModel().getSelectedItem();
                 if (u != null) {
-                    textInfo.setText("id: " + u.getId() + ", " + "Имя: " + u.getName() + ", " + "Тип шерсти: " + u.getFur() + ", " + "Окрас: " + u.getColourFur() + ", " + "Цвет глаз: " + u.getColourEye() + ", " + "Полоски: " + u.getStripped() + ", " + "Пол: " + u.getGender());
+                    textInfo.setText("   Имя: " + u.getName() + ", " + "Тип шерсти: " + u.getFur() + ", " + "  \n" + "   Окрас: " + u.getColourFur() + ", \n" + "   Цвет глаз: " + u.getColourEye() + ", " + "Полоски: " + u.getStripped() + ", " + "Пол: " + u.getGender());
                 } else {
                     textInfo.setText("Кот не выбран");
                 }
@@ -89,10 +118,6 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     Group root = new Group();
 
     VBox strings = new VBox();
@@ -100,6 +125,7 @@ public class Main extends Application {
     HBox buttonBox = new HBox();
     ComboBox<CreateKoshka> catBox = new ComboBox<>();
     ComboBox sex = new ComboBox();
+
     ComboBox fur = new ComboBox();
     ComboBox colourFur = new ComboBox();
     ComboBox colourEye = new ComboBox();
@@ -109,9 +135,10 @@ public class Main extends Application {
 
     VBox addCatBox = new VBox();
     Button buttonAddCat = new Button("Добавить кота");
-    TextField name = new TextField();
 
-    final private int WIDTH = 1000;
+    TextField name = new TextField("Горшок");
+
+    final private int WIDTH = 350;
     final private int HEIGHT = 600;
 
     private ArrayList<CreateKoshka> cats = new ArrayList<>();
@@ -134,5 +161,8 @@ public class Main extends Application {
 
     String[] stripped = new String[]{"Тикированный", "Полосатый", "Мраморный", "Не полосатый"};
 
+    public static void main(String[] args) {
+        launch(args);
+    }
 
 }

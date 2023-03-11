@@ -31,6 +31,8 @@ public class CreateKoshka {
         return name;
     }
 
+    public void setName(String name) { this.name = name; }
+
     public String getFur() {
         return fur;
     }

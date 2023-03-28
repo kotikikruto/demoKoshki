@@ -11,6 +11,7 @@ public class CreateKoshka {
     String stripped;
     String gender;
 
+    String genome;
 
 
     public CreateKoshka(String name, String fur, String colourFur, String colourEye, String stripped, String gender) {
@@ -22,6 +23,7 @@ public class CreateKoshka {
         this.colourEye = colourEye;
         this.stripped = stripped;
         this.gender = gender;
+        genome = "genome"; // TODO ну как-то из бэдэ достать геном
 
     }
 
@@ -51,6 +53,10 @@ public class CreateKoshka {
 
     public String getGender() {
         return gender;
+    }
+
+    public String getGenome(){
+        return genome;
     }
 
     @Override

@@ -8,17 +8,80 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Main extends Application {
+
+    String newKoshka(CreateKoshka koshka, CreateKoshka kot) {
+
+        String koshkaGenome = koshka.getGenome();
+        String kotGenome = kot.getGenome();
+
+
+        StringBuilder kittenGenome = new StringBuilder();
+
+        for (int j = 0; j < koshkaGenome.length(); j = j + 2) {
+
+            int a = (int) (Math.random() * 2);
+
+            if (a == 0) {
+
+                kittenGenome.append(koshkaGenome.charAt(j));
+            } else {
+
+                kittenGenome.append(koshkaGenome.charAt(j + 1));
+
+            }
+
+            int b = (int) (Math.random() * 2);
+
+            if (b == 0) {
+
+                kittenGenome.append(kotGenome.charAt(j));
+
+            } else {
+
+                kittenGenome.append(kotGenome.charAt(j + 1));
+
+            }
+
+        }
+
+        StringBuilder goodKittenGenome = new StringBuilder();
+        ArrayList<String> anotherKittenGenome = new ArrayList<>();
+
+        for (int j = 0; j < kittenGenome.length(); j = j + 2) {
+
+            if (((kittenGenome.charAt(j) > kittenGenome.charAt(j + 1)) && kittenGenome.toString().charAt(j + 1) != '-') || (kittenGenome.toString().charAt(j) == '-')) {
+
+                goodKittenGenome.append(kittenGenome.toString().charAt(j + 1));
+                goodKittenGenome.append(kittenGenome.toString().charAt(j));
+
+            } else {
+
+                goodKittenGenome.append(kittenGenome.toString().charAt(j));
+                goodKittenGenome.append(kittenGenome.toString().charAt(j + 1));
+
+            }
+
+            if ((j == 10) || (j == 14) || (j == 18) || (j == 22)) {
+
+                anotherKittenGenome.add(goodKittenGenome.toString());
+                goodKittenGenome.delete(0, goodKittenGenome.length()); //Если тут будет ошибка это значит что надо вычесть один из гудкитенгеном.ленс
+
+            }
+        }
+
+        return goodKittenGenome.toString();
+    }
 
     public void start(Stage primaryStage) throws Exception {
 
@@ -26,7 +89,27 @@ public class Main extends Application {
         cats.add(new CreateKoshka("Begemot", "1", "Green", "Yellow", "no", "Кот"));
         cats.add(new CreateKoshka("Adam", "1", "Gold", "Blue", "no", "Кот"));
 
-        catBox.getItems().addAll(cats);
+        CreateKoshka Asya = new CreateKoshka("Asya", "1", "Gold", "Blue", "no", "Кошка", "aabbccddff");
+        CreateKoshka Slava = new CreateKoshka("Slava", "1", "Gold", "Blue", "no", "Кот", "AABBCCDD--");
+        catsBox.getItems().addAll(cats);
+
+
+        ArrayList<CreateKoshka> cat = new ArrayList<>();
+
+        ArrayList<CreateKoshka> caty = new ArrayList<>();
+
+        for (CreateKoshka test : cats) {
+            if (test.gender == "Кот") {
+                cat.add(test);
+            }
+        }
+
+        for (CreateKoshka test : cats) {
+            if (test.gender == "Кошка") {
+                caty.add(test);
+            }
+        }
+
 
         sex.getItems().addAll(sexes);
         sex.setValue("                                                         ");
@@ -49,7 +132,7 @@ public class Main extends Application {
         strings.getChildren().add(addCatBox);
 
         buttonBox.setSpacing(10);
-        buttonBox.getChildren().add(catBox);
+        buttonBox.getChildren().add(catsBox);
         buttonBox.getChildren().add(buttonGetInfo);
 
 
@@ -67,50 +150,110 @@ public class Main extends Application {
         addCatBox.getChildren().add(new Text("Пол: "));
         addCatBox.getChildren().add(sex);
         addCatBox.getChildren().add(buttonAddCat);
+        addCatBox.getChildren().add(buttonCrossCat);
 
         buttonGetInfo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                //Label secondLabel = new Label("Кошка: ");
                 HBox secondaryLayout = new HBox();
-                //secondaryLayout.getChildren().add(secondLabel);
                 secondaryLayout.getChildren().add(textInfo);
                 Scene secondScene = new Scene(secondaryLayout, 370, 60);
 
-                // New window (Stage)
-                Stage newWindow = new Stage();
-                newWindow.setTitle("Кошка-инфа");
-                newWindow.setScene(secondScene);
+                Stage newWindow1 = new Stage();
+                newWindow1.setTitle("Кошка-инфа");
+                newWindow1.setScene(secondScene);
 
-                // Specifies the modality for new window.
-                newWindow.initModality(Modality.WINDOW_MODAL);
+                newWindow1.initModality(Modality.WINDOW_MODAL);
 
-                // Specifies the owner Window (parent) for new window
-                newWindow.initOwner(primaryStage);
+                newWindow1.initOwner(primaryStage);
 
-                // Set position of second window, related to primary window.
-                newWindow.setX(primaryStage.getX() + 200);
-                newWindow.setY(primaryStage.getY() + 100);
+                newWindow1.setX(primaryStage.getX() + 200);
+                newWindow1.setY(primaryStage.getY() + 100);
 
-                newWindow.show();
+                newWindow1.show();
 
-                CreateKoshka u = (CreateKoshka) catBox.getSelectionModel().getSelectedItem();
+                CreateKoshka u = (CreateKoshka) catsBox.getSelectionModel().getSelectedItem();
                 if (u != null) {
                     textInfo.setText("   Имя: " + u.getName() + ", " + "Тип шерсти: " + u.getFur() + ", " + "  \n" + "   Окрас: " + u.getColourFur() + ", \n" + "   Цвет глаз: " + u.getColourEye() + ", " + "Полоски: " + u.getStripped() + ", " + "Пол: " + u.getGender());
                 } else {
-                    textInfo.setText("Кот не выбран");
+                    textInfo.setText(newKoshka(Asya, Slava));
+                    //textInfo.setText("Кот не выбран");
                 }
             }
         });
         buttonAddCat.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                CreateKoshka u = new CreateKoshka(name.getText(), fur.getSelectionModel().getSelectedItem().toString(), colourFur.getSelectionModel().getSelectedItem().toString(), colourEye.getSelectionModel().getSelectedItem().toString(), isStripped.getSelectionModel().getSelectedItem().toString(), sex.getSelectionModel().getSelectedItem().toString());
-                cats.add(u);
-                catBox.getItems().addAll(u);
+                CreateKoshka A = new CreateKoshka(name.getText(), fur.getSelectionModel().getSelectedItem().toString(), colourFur.getSelectionModel().getSelectedItem().toString(), colourEye.getSelectionModel().getSelectedItem().toString(), isStripped.getSelectionModel().getSelectedItem().toString(), sex.getSelectionModel().getSelectedItem().toString());
+                cats.add(A);
+                catsBox.getItems().addAll(A);
+                for (CreateKoshka test : cats) {
+                    if (test.gender == "Кот") {
+                        cat.add(test);
+                    }
+                }
+
+                for (CreateKoshka test : cats) {
+                    if (test.gender == "Кошка") {
+                        caty.add(test);
+                    }
+                }
                 name.clear();
             }
         });
+        buttonCrossCat.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                HBox thirdLayout = new HBox();
+                VBox catLayout = new VBox();
+                VBox catyLayout = new VBox();
+                VBox kittenLayout = new VBox();
+
+                //thirdLayout.getChildren().add(textInfo);
+                Scene thirdScene = new Scene(thirdLayout, 300, 300);
+                Stage newWindow2 = new Stage();
+                newWindow2.setTitle("Получатель котиков");
+                newWindow2.setScene(thirdScene);
+                newWindow2.initModality(Modality.WINDOW_MODAL);
+                newWindow2.initOwner(primaryStage);
+                newWindow2.setX(primaryStage.getX() + 200);
+                newWindow2.setY(primaryStage.getY() + 100);
+
+                thirdLayout.getChildren().add(catLayout);
+                thirdLayout.getChildren().add(catyLayout);
+                thirdLayout.getChildren().add(kittenLayout);
+
+                Button buttonNewCat = new Button("Скрестить котов");
+
+                TextField kittenName = new TextField();
+                ComboBox<CreateKoshka> catBox = new ComboBox<>();
+                ComboBox<CreateKoshka> catyBox = new ComboBox<>();
+                catLayout.getChildren().add(new Text("Коты:"));
+                catLayout.getChildren().add(catBox);
+                catLayout.setSpacing(30);
+
+                catBox.getItems().addAll(cat);
+                catyLayout.getChildren().add(new Text("Кошки:"));
+                catyLayout.getChildren().add(catyBox);
+                catyLayout.setSpacing(30);
+                catyBox.getItems().addAll(caty);
+                kittenLayout.getChildren().add(kittenName);
+                kittenLayout.getChildren().add(buttonNewCat);
+
+                newWindow2.show();
+//                buttonNewCat.setOnAction(new EventHandler<ActionEvent>() {
+//                    @Override
+//                    public void handle(ActionEvent e) {
+//                        //CreateKoshka u = new NewKoshka(catBox.getSelectionModel().getSelectedItem(), catyBox.getSelectionModel().getSelectedItem(), kittenName.getText());
+//                        CreateKoshka u = new NewKoshka(, kittenName.getText());
+//                        cats.add(u);
+//                        catsBox.getItems().addAll(u);
+//                        name.clear();
+//                    }
+//                });
+            }
+        });
+
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         primaryStage.setTitle("Cat");
@@ -123,7 +266,7 @@ public class Main extends Application {
     VBox strings = new VBox();
 
     HBox buttonBox = new HBox();
-    ComboBox<CreateKoshka> catBox = new ComboBox<>();
+    ComboBox<CreateKoshka> catsBox = new ComboBox<>();
     ComboBox sex = new ComboBox();
 
     ComboBox fur = new ComboBox();
@@ -135,13 +278,14 @@ public class Main extends Application {
 
     VBox addCatBox = new VBox();
     Button buttonAddCat = new Button("Добавить кота");
-
+    Button buttonCrossCat = new Button("Скрестить кота");
     TextField name = new TextField("Горшок");
 
     final private int WIDTH = 350;
     final private int HEIGHT = 600;
 
-    private ArrayList<CreateKoshka> cats = new ArrayList<>();
+    public ArrayList<CreateKoshka> cats = new ArrayList<>();
+
 
     String[] sexes = new String[]{"Кот", "Кошка"};
     String[] furs = new String[]{"Короткошерстный", "Длинношерстный", "Без шерсти"};
@@ -160,6 +304,7 @@ public class Main extends Application {
             "Карий + Серый", "Охра + Светло-голубой"};
 
     String[] stripped = new String[]{"Тикированный", "Полосатый", "Мраморный", "Не полосатый"};
+
 
     public static void main(String[] args) {
         launch(args);

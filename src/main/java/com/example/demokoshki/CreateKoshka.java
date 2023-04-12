@@ -1,5 +1,7 @@
 package com.example.demokoshki;
 
+import java.util.ArrayList;
+
 public class CreateKoshka {
 
     static int counter = 0;
@@ -26,6 +28,20 @@ public class CreateKoshka {
         genome = "genome"; // TODO ну как-то из бэдэ достать геном
 
     }
+
+    public CreateKoshka(String name, String fur, String colourFur, String colourEye, String stripped, String gender, String genome) {
+        id = counter;
+        counter += 1;
+        this.name = name;
+        this.fur = fur;
+        this.colourFur = colourFur;
+        this.colourEye = colourEye;
+        this.stripped = stripped;
+        this.gender = gender;
+        this.genome = genome;
+
+    }
+
 
     public int getId() { return id; }
 
@@ -63,4 +79,5 @@ public class CreateKoshka {
     public String toString() {
         return name;
     }
+
 }
